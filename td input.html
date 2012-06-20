@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>testing</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$("#td1").click(function(){
+					document.getElementById("td1").style.display="none";
+					reps.value=document.getElementById("td1").innerHTML;
+					document.getElementById("td2").style.display="";
+					document.getElementById("reps").focus();
+				});
+			});
+			function showP()
+			{
+				repsInput=reps.value.replace(/ /g,"");
+				document.getElementById("p1").innerHTML="";
+				document.getElementById("td1").innerHTML=repsInput;
+				document.getElementById("td2").style.display="none";
+				document.getElementById("td1").style.display="";
+			}
+			function checkKey(e)
+			{
+				var keynum;
+				var keychar;
+				var numcheck;
+
+				if(window.event) // IE8 and earlier
+				{
+					keynum = e.keyCode;
+				}
+				else if(e.which) // IE9/Firefox/Chrome/Opera/Safari
+				{
+					keynum = e.which;
+				}
+				if(keynum==13)
+				{
+					checkNum();
+				}
+			}
+			function checkNum()
+			{
+				if(!isNaN(reps.value)&&reps.value!=""&&!reps.value.match("\B ")&&reps.value.match("[^ ]"))
+				{
+					showP();
+				}
+				else
+				{
+					document.getElementById("p1").innerHTML="Hey that's not a number";
+				}
+			}
+							
+		</script>
+	</head>
+	<body>
+		<table id="tb1">
+			<tr id="tr1">
+				<td id="td1">5</td>
+				<td id="td2" style="display:none;"><input name="reps" id="reps" value="5" onkeydown="checkKey(event)" onblur="checkNum()"/></td>
+			</tr>
+		</table>
+		<p id="p1"></p>
+	</body>
+</html>
+
