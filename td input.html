@@ -5,27 +5,44 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 		<script>
 			$(document).ready(function(){
-				$("#td1").click(function(){
-					document.getElementById("td1").style.display="none";
-					reps.value=document.getElementById("td1").innerHTML;
-					document.getElementById("td2").style.display="";
-					document.getElementById("reps").focus();
+				$(".td").click(function(){
+					var thisid = this.id;
+					var inputid = thisid.replace("td","reps");
+					var inreps = thisid.replace("td","inreps");
+					document.getElementById(thisid).style.display="none";
+					document.getElementById(inreps).value=Number(document.getElementById(thisid).innerHTML);
+					document.getElementById(inputid).style.display="";
+					document.getElementById(inreps).focus();
 				});
 			});
-			function showP()
+			function showP(thisid)
 			{
-				repsInput=reps.value.replace(/ /g,"");
+				var tdid = thisid.replace("inreps","td");
+				var repsid = thisid.replace("inreps","reps");
+				repsInput=document.getElementById(thisid).value.replace(/ /g,"");
+				while(repsInput[0]=="0")
+				{
+					repsInput=repsInput.slice(1);
+				}
+				if(repsInput=="")
+				{
+					repsInput=0;
+				}
+				if(repsInput[0]==".")
+				{
+					repsInput= "0" + repsInput;
+				}
 				document.getElementById("p1").innerHTML="";
-				document.getElementById("td1").innerHTML=repsInput;
-				document.getElementById("td2").style.display="none";
-				document.getElementById("td1").style.display="";
+				document.getElementById(tdid).innerHTML=repsInput;
+				document.getElementById(repsid).style.display="none";
+				document.getElementById(tdid).style.display="";
+				showcalc();
 			}
-			function checkKey(e)
+			function checkKey(e,thisid)
 			{
 				var keynum;
 				var keychar;
 				var numcheck;
-
 				if(window.event) // IE8 and earlier
 				{
 					keynum = e.keyCode;
@@ -36,31 +53,56 @@
 				}
 				if(keynum==13)
 				{
-					checkNum();
+					document.getElementById(thisid).blur();
 				}
 			}
-			function checkNum()
+			function checkNum(inrepsid)
 			{
-				if(!isNaN(reps.value)&&reps.value!=""&&!reps.value.match("\B ")&&reps.value.match("[^ ]"))
+				var inreps = document.getElementById(inrepsid);
+				if(!isNaN(document.getElementById(inrepsid).value)&&document.getElementById(inrepsid).value!=""&&!document.getElementById(inrepsid).value.match("\B ")&&document.getElementById(inrepsid).value.match("[^ ]"))
 				{
-					showP();
+					showP(inrepsid);
 				}
 				else
 				{
 					document.getElementById("p1").innerHTML="Hey that's not a number";
 				}
 			}
-							
+			function showcalc()
+			{
+				var adder = 0;
+				var stuff = document.getElementsByTagName("tr");
+				var x = stuff.length;
+				for(y=0;y<x;y++)
+				{
+					var nodes = stuff[y].childNodes;
+					adder = adder + Number(nodes[1].innerHTML);
+				}
+				document.getElementById("addit").innerHTML=adder;
+			}			
 		</script>
 	</head>
 	<body>
 		<table id="tb1">
 			<tr id="tr1">
-				<td id="td1">5</td>
-				<td id="td2" style="display:none;"><input name="reps" id="reps" value="5" onkeydown="checkKey(event)" onblur="checkNum()"/></td>
+				<td  class="td" id="td1">0</td>
+				<td id="reps1" style="display:none;"><input name="inreps1" id="inreps1" value="0" onkeydown="checkKey(event,this.id)" onblur="checkNum(this.id)"/></td>
+			</tr>
+			<tr id="tr2">
+				<td  class="td" id="td2">0</td>
+				<td id="reps2" style="display:none;"><input name="inreps2" id="inreps2" value="0" onkeydown="checkKey(event,this.id)" onblur="checkNum(this.id)"/></td>
+			</tr>
+			<tr id="tr3">
+				<td  class="td" id="td3">0</td>
+				<td id="reps3" style="display:none;"><input name="inreps3" id="inreps3" value="0" onkeydown="checkKey(event,this.id)" onblur="checkNum(this.id)"/></td>
+			</tr>
+			<tr id="tr4">
+				<td  class="td" id="td4">0</td>
+				<td id="reps4" style="display:none;"><input name="inreps4" id="inreps4" value="0" onkeydown="checkKey(event,this.id)" onblur="checkNum(this.id)"/></td>
 			</tr>
 		</table>
 		<p id="p1"></p>
+		<p id="addit">0</p>
 	</body>
 </html>
 
